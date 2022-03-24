@@ -1,7 +1,6 @@
-import 'maBDD.dart';
 import 'auteur.dart';
 
-class GestionAuteur extends maBDD {
+class GestionAuteur {
   List<Auteur> lesAuteurs;
 
   GestionAuteur(this.lesAuteurs);

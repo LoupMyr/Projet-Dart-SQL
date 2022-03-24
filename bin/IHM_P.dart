@@ -1,7 +1,10 @@
+import 'dart:developer';
 import 'dart:io';
-
 import 'IHM_Auteur.dart';
 import 'IHM_Editeur.dart';
+import 'db_config.dart';
+import 'db_Auteur.dart';
+import 'db_Editeur.dart';
 import 'IHM_Produit.dart';
 
 class IhmPrincipale {
@@ -10,13 +13,49 @@ class IhmPrincipale {
         "#########################\n# GESTION FURET DU NORD #\n#########################\n");
   }
 
+  static int saisiInt(int nbchoix) {
+    bool saisieValide = false;
+    int i = -1;
+    while (!saisieValide) {
+      print("> Veuillez saisir une action (0-$nbchoix)");
+      try {
+        i = int.parse(stdin.readLineSync().toString());
+        if (i >= 0 && i <= nbchoix) {
+          saisieValide = true;
+        } else {
+          print("La saisie ne correspond à aucune action.");
+        }
+      } catch (e) {
+        print("Erreur dans la saisie.");
+      }
+    }
+    return i;
+  }
+
+  static String saisieString() {
+    bool saisieValide = false;
+    String s = "";
+    while (!saisieValide) {
+      print("> Veuillez saisir une chaine de caractère :");
+      try {
+        s = stdin.readLineSync().toString();
+        saisieValide = true;
+      } catch (e) {
+        print("Erreur dans la saisie.");
+      }
+    }
+    return s;
+  }
+
   static Future<void> afficherChoixTable() async {
     int nb = -1;
     while (nb != 0) {
       print(
           "#######################\n# CHOSISSEZ UNE OPTION #\n#######################\n\n");
-      print("1. BDD\n2. Produit\n3. Auteur\n4. Editeur\n5. Annuler\n");
-      int nb = saisiChoixTable(5);
+      print("0. Annuler\n1. BDD\n2. Produit\n3. Auteur\n4. Editeur\n");
+      int nb = saisiInt(5);
+      //print(nb);
+      log(nb.toString());
       if (nb == 1) {
         await IhmPrincipale.menuBDD();
       } else if (nb == 2) {
@@ -29,31 +68,14 @@ class IhmPrincipale {
     }
   }
 
-  static int saisiChoixTable(int nbchoix) {
-    bool valide = false;
-    int nb = 0;
-    print("Entre 1 et " + nbchoix.toString());
-    while (!valide) {
-      try {
-        int nb = int.parse(stdin.readLineSync().toString());
-        if (nb >= 1 && nb <= nbchoix) {
-          valide = true;
-        }
-      } catch (e) {
-        print("Veuillez recommencer");
-      }
-    }
-    return nb;
-  }
-
   static Future<void> menuBDD() async {
     int choix = -1;
     while (choix != 0) {
       print(
           "#########################\n# CHOISISSEZ UNE ACTION #\n#########################\n\n");
       print(
-          "1. Créer les tables\n2. Vérifier les tables\n3. Afficher les tables\n4. Supprimer une table\n5. Supprimer toutes les tables\n6. Annuler");
-      int choix = saisiChoixTable(6);
+          "0. Annuler\n1. Créer les tables\n2. Vérifier les tables\n3. Afficher les tables\n4. Supprimer une table\n5. Supprimer toutes les tables\n");
+      int choix = saisiInt(6);
       if (choix == 1) {
         await IhmPrincipale.createTable();
       } else if (choix == 2) {
@@ -132,7 +154,7 @@ class IhmPrincipale {
         "#########################\n# CHOISISSEZ UNE ACTION #\n#########################\n\n");
     print(
         "1. Selectionner\n2. Modifier\n3. Insérer\n4. Supprimer\n5. Annuler\n");
-    saisiChoixTable(5);
+    saisiInt(5);
   }
 
   static void goodbye() {
