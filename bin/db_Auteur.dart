@@ -91,11 +91,12 @@ class DbAuteur {
       try {
         String requete = "UPDATE Auteur SET nom = '" +
             nom +
-            ", prenom = '" +
+            "', prenom = '" +
             prenom +
-            ", ' WHERE id='" +
+            "' WHERE id=" +
             id.toString() +
-            "'";
+            ";";
+        print(requete);
         await conn.query(requete);
       } catch (e) {
         log(e.toString());
@@ -129,7 +130,7 @@ class DbAuteur {
       MySqlConnection conn =
           await MySqlConnection.connect(DBConfig.getSettings());
       try {
-        String requete = "TRUNCATE TABLE Auteur;";
+        String requete = "DELETE FROM Auteur;";
         await conn.query(requete);
       } catch (e) {
         log(e.toString());

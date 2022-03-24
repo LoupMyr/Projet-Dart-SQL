@@ -91,9 +91,9 @@ class DbEditeur {
       try {
         String requete = "UPDATE Editeur SET nom = '" +
             nom +
-            ", adresse = '" +
+            "', adresse = '" +
             adresse +
-            ", ' WHERE id='" +
+            " ' WHERE id='" +
             id.toString() +
             "'";
         await conn.query(requete);
@@ -129,7 +129,7 @@ class DbEditeur {
       MySqlConnection conn =
           await MySqlConnection.connect(DBConfig.getSettings());
       try {
-        String requete = "TRUNCATE TABLE Editeur;";
+        String requete = "DELETE FROM Editeur;";
         await conn.query(requete);
       } catch (e) {
         log(e.toString());

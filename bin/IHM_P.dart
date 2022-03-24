@@ -79,14 +79,13 @@ class IhmPrincipale {
     }
   }
 
-  static Future<void> afficherChoixTable() async {
+  static Future<int> afficherChoixTable() async {
     int nb = -1;
     while (nb != 0) {
       print(
           "#######################\n# CHOSISSEZ UNE OPTION #\n#######################\n\n");
       print("0. Annuler\n1. BDD\n2. Produit\n3. Auteur\n4. Editeur\n");
-      int nb = saisiInt(5);
-      //print(nb);
+      int nb = saisiInt(4);
       log(nb.toString());
       if (nb == 1) {
         await IhmPrincipale.menuBDD();
@@ -98,6 +97,7 @@ class IhmPrincipale {
         await IhmEditeur.menu();
       }
     }
+    return 0;
   }
 
   static Future<void> menuBDD() async {
@@ -107,7 +107,7 @@ class IhmPrincipale {
           "#########################\n# CHOISISSEZ UNE ACTION #\n#########################\n\n");
       print(
           "0. Annuler\n1. Créer les tables\n2. Vérifier les tables\n3. Afficher les tables\n4. Supprimer une table\n5. Supprimer toutes les tables\n");
-      int choix = saisiInt(6);
+      int choix = saisiInt(5);
       if (choix == 1) {
         await IhmPrincipale.createTable();
       } else if (choix == 2) {
@@ -118,9 +118,11 @@ class IhmPrincipale {
         await IhmPrincipale.deleteTable();
       } else if (choix == 5) {
         await IhmPrincipale.deleteAllTables();
+      } else if (choix == 0) {
+        print("Retour menu précédent.");
+        await IhmPrincipale.afficherChoixTable();
       }
     }
-    print("Retour menu précédent.");
     await Future.delayed(Duration(seconds: 1));
   }
 

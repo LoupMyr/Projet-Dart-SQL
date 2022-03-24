@@ -6,7 +6,7 @@ class IhmAuteur {
   static Future<void> menu() async {
     int choix = -1;
     while (choix != 0) {
-      print("Menu - Gestion Etudiants");
+      print("Menu - Gestion Auteur");
       print("1- Afficher des données de la table");
       print("2- Inserer une données dans la table");
       print("3- Modifier une données dans la table");
@@ -26,10 +26,11 @@ class IhmAuteur {
         await IhmAuteur.deleteAuteur();
       } else if (choix == 5) {
         await IhmAuteur.deleteAllAuteurs();
+      } else if (choix == 0) {
+        print("Retour menu précédent.");
+        await IhmPrincipale.afficherChoixTable();
       }
     }
-    print("Retour menu précédent.");
-    print("--------------------------------------------------");
     await Future.delayed(Duration(seconds: 1));
   }
 
