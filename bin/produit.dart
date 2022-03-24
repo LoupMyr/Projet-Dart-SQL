@@ -5,11 +5,15 @@ import 'editeur.dart';
 class Produit implements Data {
   int _idP = 0;
   String _titre = "";
-  Auteur _auteur = new Auteur.vide();
-  Editeur _editeur = new Editeur.vide();
+  Auteur _auteur = Auteur.vide();
+  Editeur _editeur = Editeur.vide();
   String _type = "";
   int _prix = 0;
   int _nbDispo = 0;
+
+  Produit(this._idP, this._titre, this._auteur, this._editeur, this._type,
+      this._prix, this._nbDispo);
+  Produit.vide();
 
   bool estNull() {
     bool estnull = false;

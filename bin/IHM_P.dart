@@ -2,10 +2,11 @@ import 'dart:developer';
 import 'dart:io';
 import 'IHM_Auteur.dart';
 import 'IHM_Editeur.dart';
-import 'db_config.dart';
+import 'db_Config.dart';
 import 'db_Auteur.dart';
 import 'db_Editeur.dart';
 import 'IHM_Produit.dart';
+import 'data.dart';
 
 class IhmPrincipale {
   static void afficherAccueil() {
@@ -45,6 +46,37 @@ class IhmPrincipale {
       }
     }
     return s;
+  }
+
+  static int saisieID() {
+    bool saisieValide = false;
+    int i = -1;
+    while (!saisieValide) {
+      print("> Veuillez saisir l'id correspondant:");
+      try {
+        i = int.parse(stdin.readLineSync().toString());
+        if (i > 0) {
+          saisieValide = true;
+        } else {
+          print("La valeur saisie est inférieur ou égale à zéro.");
+        }
+      } catch (e) {
+        print("Erreur dans la saisie.");
+      }
+    }
+    return i;
+  }
+
+  static void afficherUneDonnee(Data data) {
+    print(data.getEntete());
+    print(data.getInLine());
+  }
+
+  static void afficherDesDonnees(List<Data> dataList) {
+    print(dataList.first.getEntete());
+    for (var Etudiant in dataList) {
+      print(Etudiant.getInLine());
+    }
   }
 
   static Future<void> afficherChoixTable() async {

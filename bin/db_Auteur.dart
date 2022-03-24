@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:mysql1/mysql1.dart';
 
 import 'auteur.dart';
-import 'db_config.dart';
+import 'db_Config.dart';
 
 class DbAuteur {
   static Future<Auteur> selectAuteur(int id) async {
@@ -124,7 +124,7 @@ class DbAuteur {
   }
 
   //delete all
-  static Future<void> deleteAllAuteur() async {
+  static Future<void> deleteAllAuteurs() async {
     try {
       MySqlConnection conn =
           await MySqlConnection.connect(DBConfig.getSettings());

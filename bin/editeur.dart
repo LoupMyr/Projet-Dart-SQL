@@ -1,4 +1,6 @@
-class Editeur {
+import 'data.dart';
+
+class Editeur implements Data {
   int _id = 0;
   String _nom = "";
   String _adresse = "";
