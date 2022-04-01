@@ -3,29 +3,15 @@ import 'dart:developer';
 import 'package:mysql1/mysql1.dart';
 
 class DBConfig {
-  // attribut et méthode static, car pas besoin d'instanciation de la classe.
-  static ConnectionSettings settings = ConnectionSettings(
-    host: 'localhost',
-    port: 3306,
-    user: 'DartUser',
-    password: 'usermdp',
-    db: "DartDB",
-  );
-
-  static ConnectionSettings getSettings() {
-    return settings;
-  }
-
   // permet la création des tables, en vérifiant si elles existes ou non
   // et créé les tables manquantes si besoin
-  static Future<void> createTables() async {
+  static Future<void> createTables(ConnectionSettings settings) async {
     bool checkProduit = false;
     bool checkAuteur = false;
     bool checkEditeur = false;
 
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete = "SHOW TABLES;";
         Results reponse = await conn.query(requete);
@@ -67,14 +53,13 @@ class DBConfig {
   }
 
   // retourne vrai si toute les tables sont créé, faux sinon
-  static Future<bool> checkTables() async {
+  static Future<bool> checkTables(ConnectionSettings settings) async {
     bool checkAll = false;
     bool checkProduit = false;
     bool checkAuteur = false;
     bool checkEditeur = false;
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       String requete = "SHOW TABLES;";
       try {
         Results reponse = await conn.query(requete);
@@ -106,11 +91,10 @@ class DBConfig {
   }
 
   // retourne la liste des noms des tables dans la BDD;
-  static Future<List<String>> selectTables() async {
+  static Future<List<String>> selectTables(ConnectionSettings settings) async {
     List<String> listTable = [];
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete = "SHOW TABLES;";
         Results reponse = await conn.query(requete);
@@ -130,10 +114,10 @@ class DBConfig {
   }
 
   // permet de supprimer une table via son nom passé en parametre, si elle existe dans la database
-  static Future<void> dropTable(String table) async {
+  static Future<void> dropTable(
+      ConnectionSettings settings, String table) async {
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         await conn.query("DROP TABLES IF EXISTS " + table + ";");
       } catch (e) {
@@ -146,10 +130,9 @@ class DBConfig {
   }
 
   // supprime toute les tables dans la DB
-  static Future<void> dropAllTable() async {
+  static Future<void> dropAllTable(ConnectionSettings settings) async {
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete = "SHOW TABLES;";
         Results reponse = await conn.query(requete);
@@ -168,11 +151,11 @@ class DBConfig {
     }
   }
 
-  static Future<dynamic> executerRequete(String requete) async {
+  static Future<dynamic> executerRequete(
+      ConnectionSettings settings, String requete) async {
     Results? reponse;
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         reponse = await conn.query(requete);
       } catch (e) {

@@ -1,16 +1,13 @@
-import 'auteur.dart';
-import 'editeur.dart';
 import 'produit.dart';
 import 'package:mysql1/mysql1.dart';
-import 'db_Config.dart';
 import 'dart:developer';
 
 class DbProduit {
-  static Future<Produit> selectProduit(int id) async {
+  static Future<Produit> selectProduit(
+      ConnectionSettings settings, int id) async {
     Produit pro = Produit.vide();
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete = "SELECT * FROM Produit WHERE id=" +
             id.toString() +
@@ -38,11 +35,11 @@ class DbProduit {
     return pro;
   }
 
-  static Future<List<Produit>> selectAllProduit() async {
+  static Future<List<Produit>> selectAllProduits(
+      ConnectionSettings settings) async {
     List<Produit> listeProduit = [];
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete = "SELECT * FROM Produit;";
         Results reponse = await conn.query(requete);
@@ -62,19 +59,18 @@ class DbProduit {
     return listeProduit;
   }
 
-  static Future<void> insertProduit(String titre, Auteur auteur,
-      Editeur editeur, String type, int prix, int nbDispo) async {
+  static Future<void> insertProduit(ConnectionSettings settings, String titre,
+      int idAuteur, int idEditeur, String type, int prix, int nbDispo) async {
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete =
             "INSERT INTO Produit (titre, auteur, editeur, type, prix, nbDispo) VALUES('" +
                 titre +
                 "', '" +
-                auteur.toString() +
+                idAuteur.toString() +
                 "', '" +
-                editeur.toString() +
+                idEditeur.toString() +
                 "', '" +
                 type +
                 "',, '" +
@@ -93,18 +89,24 @@ class DbProduit {
   }
 
   //update
-  static Future<void> updateProduit(int id, String titre, Auteur auteur,
-      Editeur editeur, String type, int prix, int nbDispo) async {
+  static Future<void> updateProduit(
+      ConnectionSettings settings,
+      int id,
+      String titre,
+      int idAuteur,
+      int idEditeur,
+      String type,
+      int prix,
+      int nbDispo) async {
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete = "UPDATE Produit SET titre = '" +
             titre +
             "', auteur = '" +
-            auteur.toString() +
+            idAuteur.toString() +
             "', editeur = '" +
-            editeur.toString() +
+            idEditeur.toString() +
             "', type = '" +
             type +
             "', prix = '" +
@@ -125,10 +127,9 @@ class DbProduit {
   }
 
   //delete
-  static Future<void> deleteProduit(int id) async {
+  static Future<void> deleteProduit(ConnectionSettings settings, int id) async {
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete = "DELETE FROM Produit WHERE id='" + id.toString() + "'";
         await conn.query(requete);
@@ -142,10 +143,9 @@ class DbProduit {
   }
 
   //delete all
-  static Future<void> deleteAllProduit() async {
+  static Future<void> deleteAllProduit(ConnectionSettings settings) async {
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(DBConfig.getSettings());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete = "DELETE FROM Produit;";
         await conn.query(requete);
@@ -158,18 +158,18 @@ class DbProduit {
     }
   }
 
-  // verifie l'existance d'un etudiant selon son ID
-  static Future<bool> exist(int id) async {
+  // verifie l'existance d'un produit selon son ID
+  static Future<bool> exist(ConnectionSettings settings, int id) async {
     bool exist = false;
-    if (!(await DbProduit.selectProduit(id)).estNull()) {
+    if (!(await DbProduit.selectProduit(settings, id)).estNull()) {
       exist = true;
     }
     return exist;
   }
 
-  // getEtudiant
-  static Future<Produit> getProduit(int id) async {
-    dynamic r = await selectProduit(id);
+  // getProduit
+  static Future<Produit> getProduit(ConnectionSettings settings, int id) async {
+    dynamic r = await selectProduit(settings, id);
     ResultRow rr = r.first;
     return Produit(rr['idD'], rr['titre'], rr['auteur'], rr['editeur'],
         rr['type'], rr['prix'], rr['nbDispo']);

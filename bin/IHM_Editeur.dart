@@ -1,9 +1,11 @@
+import 'package:mysql1/mysql1.dart';
+
 import 'db_Editeur.dart';
 import 'editeur.dart';
 import 'IHM_P.dart';
 
 class IhmEditeur {
-  static Future<void> menu() async {
+  static Future<void> menu(ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
       print("Menu - Gestion Editeur");
@@ -13,19 +15,19 @@ class IhmEditeur {
       print("4- Supprimer une données dans la tables");
       print("5- Supprimer toutes les données dans la tables");
       print("0- Quitter");
-      choix = IhmPrincipale.saisiInt(5);
+      choix = IhmPrincipale.saisiChoix(5);
       print("--------------------------------------------------");
 
       if (choix == 1) {
-        await IhmEditeur.menuSelectEdi();
+        await IhmEditeur.menuSelectEdi(settings);
       } else if (choix == 2) {
-        await IhmEditeur.insertEditeur();
+        await IhmEditeur.insertEditeur(settings);
       } else if (choix == 3) {
-        await IhmEditeur.updateEditeur();
+        await IhmEditeur.updateEditeur(settings);
       } else if (choix == 4) {
-        await IhmEditeur.deleteEditeur();
+        await IhmEditeur.deleteEditeur(settings);
       } else if (choix == 5) {
-        await IhmEditeur.deleteAllEditeur();
+        await IhmEditeur.deleteAllEditeur(settings);
       }
     }
     print("Retour menu précédent.");
@@ -33,20 +35,20 @@ class IhmEditeur {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  static Future<void> menuSelectEdi() async {
+  static Future<void> menuSelectEdi(ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
       print("Menu - Select Editeur");
       print("1- Afficher selon ID");
       print("2- Afficher toute la table.");
       print("0- Quitter");
-      choix = IhmPrincipale.saisiInt(2);
+      choix = IhmPrincipale.saisiChoix(2);
       print("--------------------------------------------------");
 
       if (choix == 1) {
-        await IhmEditeur.selectEditeur();
+        await IhmEditeur.selectEditeur(settings);
       } else if (choix == 2) {
-        await IhmEditeur.selectAllEditeur();
+        await IhmEditeur.selectAllEditeur(settings);
       }
     }
     print("Retour menu précédent.");
@@ -54,11 +56,11 @@ class IhmEditeur {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  // action pour ajouter un Etudiant
-  static Future<void> insertEditeur() async {
-    String nom = IhmPrincipale.saisieString();
-    String adresse = IhmPrincipale.saisieString();
-    await DbEditeur.insertEditeur(nom, adresse);
+  // action pour ajouter un editeur
+  static Future<void> insertEditeur(ConnectionSettings settings) async {
+    String nom = IhmPrincipale.saisieString("le nom");
+    String adresse = IhmPrincipale.saisieString("l'adresse");
+    await DbEditeur.insertEditeur(settings, nom, adresse);
     print("Editeur inséré dans la table.");
     print("--------------------------------------------------");
     print("Fin de l'opération.");
@@ -67,13 +69,13 @@ class IhmEditeur {
   }
 
   // action pour mettre a jour un Editeur selon ID
-  static Future<void> updateEditeur() async {
+  static Future<void> updateEditeur(ConnectionSettings settings) async {
     print("Quelle Editeur voulez vous mettre à jour ?");
     int id = IhmPrincipale.saisieID();
-    if (await DbEditeur.exist(id)) {
-      String nom = IhmPrincipale.saisieString();
-      String adresse = IhmPrincipale.saisieString();
-      await DbEditeur.updateEditeur(id, nom, adresse);
+    if (await DbEditeur.exist(settings, id)) {
+      String nom = IhmPrincipale.saisieString("le nom");
+      String adresse = IhmPrincipale.saisieString("l'adresse");
+      await DbEditeur.updateEditeur(settings, id, nom, adresse);
       print("Editeur $id mis à jour.");
       print("--------------------------------------------------");
       await Future.delayed(Duration(seconds: 1));
@@ -86,16 +88,16 @@ class IhmEditeur {
   }
 
   // action pour afficher un Editeur selon ID
-  static Future<void> selectEditeur() async {
+  static Future<void> selectEditeur(ConnectionSettings settings) async {
     print("Quelle editeur voulez vous afficher ?");
     int id = IhmPrincipale.saisieID();
-    Editeur etu = await DbEditeur.selectEditeur(id);
-    if (!etu.estNull()) {
-      IhmPrincipale.afficherUneDonnee(etu);
+    Editeur editeur = await DbEditeur.selectEditeur(settings, id);
+    if (!editeur.estNull()) {
+      IhmPrincipale.afficherUneDonnee(editeur);
       print("Fin de l'opération.");
       print("--------------------------------------------------");
     } else {
-      print("L'etudiant $id n'existe pas");
+      print("L'editeur $id n'existe pas");
       print("Fin de l'opération.");
       print("--------------------------------------------------");
     }
@@ -103,10 +105,10 @@ class IhmEditeur {
   }
 
   // action pour afficher les Editeur
-  static Future<void> selectAllEditeur() async {
-    List<Editeur> listeEdi = await DbEditeur.selectAllEditeur();
-    if (listeEdi.isNotEmpty) {
-      IhmPrincipale.afficherDesDonnees(listeEdi);
+  static Future<void> selectAllEditeur(ConnectionSettings settings) async {
+    List<Editeur> listeEditeur = await DbEditeur.selectAllEditeur(settings);
+    if (listeEditeur.isNotEmpty) {
+      IhmPrincipale.afficherDesDonnees(listeEditeur);
       print("Fin de l'opération.");
       print("--------------------------------------------------");
     } else {
@@ -118,10 +120,10 @@ class IhmEditeur {
   }
 
 // action pour supprimer un Editeur selon ID
-  static Future<void> deleteEditeur() async {
+  static Future<void> deleteEditeur(ConnectionSettings settings) async {
     print("Quelle Editeur voulez vous supprimer ?");
     int id = IhmPrincipale.saisieID();
-    DbEditeur.deleteEditeur(id);
+    DbEditeur.deleteEditeur(settings, id);
     print("Editeur $id supprimé.");
     print("Fin de l'opération.");
     print("--------------------------------------------------");
@@ -129,8 +131,8 @@ class IhmEditeur {
   }
 
   // action pour supprimer les Editeur
-  static Future<void> deleteAllEditeur() async {
-    DbEditeur.deleteAllEditeur();
+  static Future<void> deleteAllEditeur(ConnectionSettings settings) async {
+    DbEditeur.deleteAllEditeur(settings);
     print("Tables supprimées.");
     print("Fin de l'opération.");
     print("--------------------------------------------------");
