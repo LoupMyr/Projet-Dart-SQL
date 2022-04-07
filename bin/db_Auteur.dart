@@ -1,7 +1,5 @@
 import 'dart:developer';
-
 import 'package:mysql1/mysql1.dart';
-
 import 'auteur.dart';
 import 'db_Config.dart';
 
@@ -96,7 +94,6 @@ class DbAuteur {
             "' WHERE id=" +
             id.toString() +
             ";";
-        print(requete);
         await conn.query(requete);
       } catch (e) {
         log(e.toString());

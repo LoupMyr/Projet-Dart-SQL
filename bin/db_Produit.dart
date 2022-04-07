@@ -16,7 +16,7 @@ class DbProduit {
             " );";
         Results reponse = await conn.query(requete);
         pro = Produit(
-          reponse.first['idP'],
+          reponse.first['id'],
           reponse.first['titre'],
           reponse.first['auteur'],
           reponse.first['editeur'],
@@ -44,7 +44,7 @@ class DbProduit {
         String requete = "SELECT * FROM Produit;";
         Results reponse = await conn.query(requete);
         for (var row in reponse) {
-          Produit pro = Produit(row['idP'], row['titre'], row['auteur'],
+          Produit pro = Produit(row['id'], row['titre'], row['auteur'],
               row['editeur'], row['type'], row['prix'], row['nbDispo']);
           listeProduit.add(pro);
         }
@@ -67,17 +67,17 @@ class DbProduit {
         String requete =
             "INSERT INTO Produit (titre, auteur, editeur, type, prix, nbDispo) VALUES('" +
                 titre +
-                "', '" +
+                "', " +
                 idAuteur.toString() +
-                "', '" +
+                ", " +
                 idEditeur.toString() +
-                "', '" +
+                ", '" +
                 type +
-                "',, '" +
+                "', " +
                 prix.toString() +
-                "',, '" +
+                ", " +
                 nbDispo.toString() +
-                "');";
+                ");";
         await conn.query(requete);
       } catch (e) {
         log(e.toString());
@@ -103,19 +103,19 @@ class DbProduit {
       try {
         String requete = "UPDATE Produit SET titre = '" +
             titre +
-            "', auteur = '" +
+            "', auteur = " +
             idAuteur.toString() +
-            "', editeur = '" +
+            ", editeur = " +
             idEditeur.toString() +
-            "', type = '" +
+            ", type = '" +
             type +
-            "', prix = '" +
+            "', prix = " +
             prix.toString() +
-            "', nbDispo = '" +
+            ", nbDispo = " +
             nbDispo.toString() +
-            "' WHERE id='" +
+            " WHERE id=" +
             id.toString() +
-            "'";
+            ";";
         await conn.query(requete);
       } catch (e) {
         log(e.toString());
@@ -171,7 +171,7 @@ class DbProduit {
   static Future<Produit> getProduit(ConnectionSettings settings, int id) async {
     dynamic r = await selectProduit(settings, id);
     ResultRow rr = r.first;
-    return Produit(rr['idD'], rr['titre'], rr['auteur'], rr['editeur'],
+    return Produit(rr['id'], rr['titre'], rr['auteur'], rr['editeur'],
         rr['type'], rr['prix'], rr['nbDispo']);
   }
 }

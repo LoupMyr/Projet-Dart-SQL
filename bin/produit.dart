@@ -1,29 +1,27 @@
-import 'auteur.dart';
 import 'data.dart';
-import 'editeur.dart';
 
 class Produit implements Data {
-  int _idP = 0;
+  int _id = 0;
   String _titre = "";
-  Auteur _auteur = Auteur.vide();
-  Editeur _editeur = Editeur.vide();
+  int _idAuteur = 0;
+  int _idEditeur = 0;
   String _type = "";
   int _prix = 0;
   int _nbDispo = 0;
 
-  Produit(this._idP, this._titre, this._auteur, this._editeur, this._type,
+  Produit(this._id, this._titre, this._idAuteur, this._idEditeur, this._type,
       this._prix, this._nbDispo);
   Produit.vide();
 
   bool estNull() {
     bool estnull = false;
-    if (_idP == 0 &&
+    if (_id == 0 &&
         _titre == "" &&
         _type == "" &&
         _prix == 0 &&
         _nbDispo == 0 &&
-        _auteur == Auteur.vide() &&
-        _editeur == Editeur.vide()) {
+        _idAuteur == 0 &&
+        _idEditeur == 0) {
       estnull = true;
     }
     return estnull;
@@ -31,19 +29,19 @@ class Produit implements Data {
 
   @override
   String getEntete() {
-    return "| idP | titre | auteur | éditeur | type | prix | nbDispo |";
+    return "| id | titre | auteur | éditeur | type | prix | nbDispo |";
   }
 
   @override
   String getInLine() {
     return "| " +
-        _idP.toString() +
+        _id.toString() +
         " | " +
         _titre +
         " | " +
-        _auteur.toString() +
+        _idAuteur.toString() +
         " | " +
-        _editeur.toString() +
+        _idEditeur.toString() +
         " | " +
         _type +
         " | " +
