@@ -168,8 +168,8 @@ class IhmPrincipale {
       print(
           "#########################\n# CHOISISSEZ UNE ACTION #\n#########################\n\n");
       print(
-          "0. Annuler\n1. Créer les tables\n2. Vérifier les tables\n3. Afficher les tables\n4. Supprimer une table\n5. Supprimer toutes les tables\n");
-      int choix = saisiChoix(5);
+          "0. Annuler\n1. Créer les tables\n2. Vérifier les tables\n3. Afficher les tables\n4. Supprimer une table\n5. Supprimer toutes les tables\n6. Executer une requete");
+      int choix = saisiChoix(6);
       if (choix == 1) {
         await IhmPrincipale.createTable(settings);
       } else if (choix == 2) {
@@ -230,9 +230,6 @@ class IhmPrincipale {
     print("Fin de l'opération.");
     print("--------------------------------------------------");
     await Future.delayed(Duration(seconds: 1));
-    print("Annulation de l'opération.");
-    print("--------------------------------------------------");
-    await Future.delayed(Duration(seconds: 1));
   }
 
 // action pour supprimer les tables
@@ -241,7 +238,6 @@ class IhmPrincipale {
     print("Tables supprimées.");
     print("Fin de l'opération.");
     print("--------------------------------------------------");
-    await Future.delayed(Duration(seconds: 1));
     await Future.delayed(Duration(seconds: 1));
   }
 

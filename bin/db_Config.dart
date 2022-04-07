@@ -28,7 +28,7 @@ class DBConfig {
             }
           }
         }
-        if (!checkProduit) {
+        if (!checkEditeur) {
           requete =
               'CREATE TABLE Editeur (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, nom varchar(255), adresse varchar(255));';
           await conn.query(requete);
@@ -38,7 +38,7 @@ class DBConfig {
               'CREATE TABLE Auteur (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, nom varchar(255), prenom varchar(255));';
           await conn.query(requete);
         }
-        if (!checkEditeur) {
+        if (!checkProduit) {
           requete =
               'CREATE TABLE Produit (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, titre varchar(255), type varchar(255), prix int, nbDispo int, auteur int, editeur int, foreign key c1 (auteur) references Auteur(id), foreign key c2 (editeur) references Editeur(id));';
           await conn.query(requete);
@@ -133,13 +133,31 @@ class DBConfig {
   static Future<void> dropAllTable(ConnectionSettings settings) async {
     try {
       MySqlConnection conn = await MySqlConnection.connect(settings);
+      bool checkProduit = false;
+      bool checkAuteur = false;
+      bool checkEditeur = false;
       try {
         String requete = "SHOW TABLES;";
         Results reponse = await conn.query(requete);
         for (var rows in reponse) {
           for (var fields in rows) {
-            await conn.query("DROP TABLES IF EXISTS " + fields + ";");
+            if (fields == "Auteur") {
+              checkAuteur = true;
+            } else if (fields == "Editeur") {
+              checkEditeur = true;
+            } else if (fields == "Produit") {
+              checkProduit = true;
+            }
           }
+        }
+        if (checkProduit) {
+          await dropTable(settings, "Produit");
+        }
+        if (checkEditeur) {
+          await dropTable(settings, "Editeur");
+        }
+        if (checkAuteur) {
+          await dropTable(settings, "Auteur");
         }
       } catch (e) {
         log(e.toString());

@@ -35,6 +35,70 @@ class DbProduit {
     return pro;
   }
 
+  static Future<Produit> selectAuteur(
+      ConnectionSettings settings, int id) async {
+    Produit pro = Produit.vide();
+    try {
+      MySqlConnection conn = await MySqlConnection.connect(settings);
+      try {
+        String requete = "SELECT * FROM Produit WHERE auteur=" +
+            id.toString() +
+            " AND EXISTS (SELECT id FROM Produit WHERE auteur=" +
+            id.toString() +
+            " );";
+        Results reponse = await conn.query(requete);
+        pro = Produit(
+          reponse.first['id'],
+          reponse.first['titre'],
+          reponse.first['auteur'],
+          reponse.first['editeur'],
+          reponse.first['type'],
+          reponse.first['prix'],
+          reponse.first['nbDispo'],
+        );
+      } catch (e) {
+        log(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return pro;
+  }
+
+  static Future<Produit> selectEditeur(
+      ConnectionSettings settings, int id) async {
+    Produit pro = Produit.vide();
+    try {
+      MySqlConnection conn = await MySqlConnection.connect(settings);
+      try {
+        String requete = "SELECT * FROM Produit WHERE editeur=" +
+            id.toString() +
+            " AND EXISTS (SELECT id FROM Produit WHERE editeur=" +
+            id.toString() +
+            " );";
+        Results reponse = await conn.query(requete);
+        pro = Produit(
+          reponse.first['id'],
+          reponse.first['titre'],
+          reponse.first['auteur'],
+          reponse.first['editeur'],
+          reponse.first['type'],
+          reponse.first['prix'],
+          reponse.first['nbDispo'],
+        );
+      } catch (e) {
+        log(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return pro;
+  }
+
   static Future<List<Produit>> selectAllProduits(
       ConnectionSettings settings) async {
     List<Produit> listeProduit = [];

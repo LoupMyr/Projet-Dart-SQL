@@ -43,8 +43,10 @@ class IhmProduit {
       print("Menu - Select Editeur");
       print("1- Afficher selon ID");
       print("2- Afficher toute la table.");
+      print("3- Afficher les produits selon l'ID de l'auteur");
+      print("4- Afficher les produits selon l'ID de l'éditeur");
       print("0- Quitter");
-      choix = IhmPrincipale.saisiChoix(2);
+      choix = IhmPrincipale.saisiChoix(4);
       print("--------------------------------------------------");
 
       if (choix == 1) {
@@ -115,6 +117,22 @@ class IhmProduit {
       print("--------------------------------------------------");
     }
     await Future.delayed(Duration(seconds: 2));
+  }
+
+  static Future<void> selectAuteur(ConnectionSettings settings) async {
+    String requete = IhmPrincipale.saisieString("l'id de l'auteur");
+    DbProduit.selectAuteur(settings, id);
+    print("Fin de l'opération.");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
+  }
+
+  static Future<void> selectEditeur(ConnectionSettings settings) async {
+    String requete = IhmPrincipale.saisieString("l'id de l'éditeur");
+    DbProduit.selectEditeur(settings, id);
+    print("Fin de l'opération.");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
   }
 
   // action pour afficher les produits
