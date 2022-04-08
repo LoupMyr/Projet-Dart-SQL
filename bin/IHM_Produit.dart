@@ -1,16 +1,15 @@
 import 'package:mysql1/mysql1.dart';
-
-import 'db_Editeur.dart';
+import 'db_Auteur.dart';
 import 'db_Produit.dart';
-import 'editeur.dart';
 import 'IHM_P.dart';
 import 'produit.dart';
 
 class IhmProduit {
+  //Permet d'afficher le menu des choix possible sur la table produit et de le rediriger
   static Future<void> menu(ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
-      print("Menu - Gestion Editeur");
+      print("Menu - Gestion Produit");
       print("1- Afficher des données de la table");
       print("2- Inserer une données dans la table");
       print("3- Modifier une données dans la table");
@@ -37,10 +36,11 @@ class IhmProduit {
     await Future.delayed(Duration(seconds: 2));
   }
 
+  //Permet d'afficher le menu des choix possible pour la sélection sur la table Produit et de le rediriger
   static Future<void> menuSelectPro(ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
-      print("Menu - Select Editeur");
+      print("Menu - Select Produit");
       print("1- Afficher selon ID");
       print("2- Afficher toute la table.");
       print("3- Afficher les produits selon l'ID de l'auteur");
@@ -60,7 +60,7 @@ class IhmProduit {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  // action pour ajouter un produit
+  //Permet de lancer la méthode d'ajout d'un produit dans la table et de prendre les saisies nécessaires
   static Future<void> insertProduit(ConnectionSettings settings) async {
     String titre = IhmPrincipale.saisieString("le titre");
     int idAuteur = IhmPrincipale.saisiInt("l'id de l'auteur");
@@ -78,7 +78,7 @@ class IhmProduit {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  // action pour mettre a jour un Editeur selon ID
+  //Permet de lancer la méthode pour modifier un produit selon ID et de prendre les saisies nécessaires
   static Future<void> updateProduit(ConnectionSettings settings) async {
     print("Quelle Produit voulez vous mettre à jour ?");
     int id = IhmPrincipale.saisieID();
@@ -102,7 +102,7 @@ class IhmProduit {
     }
   }
 
-  // action pour afficher un Editeur selon ID
+  //Permet d'afficher un produit selon ID et de prendre la saisie nécessaire
   static Future<void> selectProduit(ConnectionSettings settings) async {
     print("Quelle produit voulez vous afficher ?");
     int id = IhmPrincipale.saisieID();
@@ -119,23 +119,7 @@ class IhmProduit {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  static Future<void> selectAuteur(ConnectionSettings settings) async {
-    String requete = IhmPrincipale.saisieString("l'id de l'auteur");
-    DbProduit.selectAuteur(settings, id);
-    print("Fin de l'opération.");
-    print("--------------------------------------------------");
-    await Future.delayed(Duration(seconds: 1));
-  }
-
-  static Future<void> selectEditeur(ConnectionSettings settings) async {
-    String requete = IhmPrincipale.saisieString("l'id de l'éditeur");
-    DbProduit.selectEditeur(settings, id);
-    print("Fin de l'opération.");
-    print("--------------------------------------------------");
-    await Future.delayed(Duration(seconds: 1));
-  }
-
-  // action pour afficher les produits
+  //Permet de lancer la méthode d'affichage de tous les produits de la table
   static Future<void> selectAllProduits(ConnectionSettings settings) async {
     List<Produit> listeProduit = await DbProduit.selectAllProduits(settings);
     if (listeProduit.isNotEmpty) {
@@ -150,7 +134,7 @@ class IhmProduit {
     await Future.delayed(Duration(seconds: 2));
   }
 
-// action pour supprimer un Editeur selon ID
+//Permet de lancer la méthode de suppression d'un produit dans la table selon son ID et de prendre la saisie nécessaire
   static Future<void> deleteProduit(ConnectionSettings settings) async {
     print("Quel Produit voulez vous supprimer ?");
     int id = IhmPrincipale.saisieID();
@@ -161,7 +145,7 @@ class IhmProduit {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  // action pour supprimer les Editeur
+  //Permet de lancer la méthode de suppression de tous les produits de la table
   static Future<void> deleteAllProduits(ConnectionSettings settings) async {
     DbProduit.deleteAllProduit(settings);
     print("Tables supprimées.");

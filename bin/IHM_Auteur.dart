@@ -5,6 +5,7 @@ import 'auteur.dart';
 import 'db_Auteur.dart';
 
 class IhmAuteur {
+  //Permet d'afficher le menu des choix possible sur la table auteur et de le rediriger
   static Future<void> menu(ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
@@ -36,6 +37,7 @@ class IhmAuteur {
     await Future.delayed(Duration(seconds: 1));
   }
 
+  //Permet d'afficher le menu des choix possible pour la sélection sur la table Auteur et de le rediriger
   static Future<void> menuSelectAuteur(ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
@@ -57,7 +59,24 @@ class IhmAuteur {
     await Future.delayed(Duration(seconds: 1));
   }
 
-  // action pour ajouter un auteur
+  //Permet d'afficher un auteur selon ID et de prendre la saisie nécessaire
+  static Future<void> selectAuteur(ConnectionSettings settings) async {
+    print("Quelle auteur voulez vous afficher ?");
+    int id = IhmPrincipale.saisieID();
+    Auteur auteur = await DbAuteur.selectAuteur(settings, id);
+    if (!auteur.estNull()) {
+      IhmPrincipale.afficherUneDonnee(auteur);
+      print("Fin de l'opération.");
+      print("--------------------------------------------------");
+    } else {
+      print("L'auteur $id n'existe pas");
+      print("Fin de l'opération.");
+      print("--------------------------------------------------");
+    }
+    await Future.delayed(Duration(seconds: 1));
+  }
+
+  //Permet de lancer la méthode d'ajout d'un auteur dans la table et de prendre les saisies nécessaires
   static Future<void> insertAuteur(ConnectionSettings settings) async {
     String nom = IhmPrincipale.saisieString("le nom");
     String prenom = IhmPrincipale.saisieString("le prenom");
@@ -69,7 +88,7 @@ class IhmAuteur {
     await Future.delayed(Duration(seconds: 1));
   }
 
-  // action pour mettre a jour un auteur selon ID
+  //Permet de lancer la méthode pour modifier un auteur selon ID et de prendre les saisies nécessaires
   static Future<void> updateAuteur(ConnectionSettings settings) async {
     print("Quelle Auteur voulez vous mettre à jour ?");
     int id = IhmPrincipale.saisieID();
@@ -88,24 +107,7 @@ class IhmAuteur {
     }
   }
 
-  // action pour afficher un auteur selon ID
-  static Future<void> selectAuteur(ConnectionSettings settings) async {
-    print("Quelle auteur voulez vous afficher ?");
-    int id = IhmPrincipale.saisieID();
-    Auteur auteur = await DbAuteur.selectAuteur(settings, id);
-    if (!auteur.estNull()) {
-      IhmPrincipale.afficherUneDonnee(auteur);
-      print("Fin de l'opération.");
-      print("--------------------------------------------------");
-    } else {
-      print("L'auteur $id n'existe pas");
-      print("Fin de l'opération.");
-      print("--------------------------------------------------");
-    }
-    await Future.delayed(Duration(seconds: 1));
-  }
-
-  // action pour afficher les auteur
+  //Permet de lancer la méthode d'affichage de tous les auteurs de la table
   static Future<void> selectAllAuteurs(ConnectionSettings settings) async {
     List<Auteur> listeAuteur = await DbAuteur.selectAllAuteur(settings);
     if (listeAuteur.isNotEmpty) {
@@ -120,7 +122,7 @@ class IhmAuteur {
     await Future.delayed(Duration(seconds: 1));
   }
 
-// action pour supprimer un auteur selon ID
+//Permet de lancer la méthode de suppression d'un auteur dans la table selon son ID et de prendre la saisie nécessaire
   static Future<void> deleteAuteur(ConnectionSettings settings) async {
     print("Quelle auteur voulez vous supprimer ?");
     int id = IhmPrincipale.saisieID();
@@ -131,7 +133,7 @@ class IhmAuteur {
     await Future.delayed(Duration(seconds: 1));
   }
 
-  // action pour supprimer les auteurs
+  //Permet de lancer la méthode de suppression de tous les auteurs de la table
   static Future<void> deleteAllAuteurs(ConnectionSettings settings) async {
     DbAuteur.deleteAllAuteurs(settings);
     print("Tables supprimées.");

@@ -5,6 +5,7 @@ import 'editeur.dart';
 import 'IHM_P.dart';
 
 class IhmEditeur {
+  //Permet d'afficher le menu des choix possible sur la table Editeur et de le rediriger
   static Future<void> menu(ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
@@ -35,6 +36,7 @@ class IhmEditeur {
     await Future.delayed(Duration(seconds: 2));
   }
 
+  //Permet d'afficher le menu des choix possible pour la sélection sur la table Editeur et de le rediriger
   static Future<void> menuSelectEdi(ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
@@ -48,7 +50,7 @@ class IhmEditeur {
       if (choix == 1) {
         await IhmEditeur.selectEditeur(settings);
       } else if (choix == 2) {
-        await IhmEditeur.selectAllEditeur(settings);
+        await IhmEditeur.selectAllEditeurs(settings);
       }
     }
     print("Retour menu précédent.");
@@ -56,7 +58,7 @@ class IhmEditeur {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  // action pour ajouter un editeur
+  //Permet de lancer la méthode d'ajout d'un éditeur dans la table et de prendre les saisies nécessaires
   static Future<void> insertEditeur(ConnectionSettings settings) async {
     String nom = IhmPrincipale.saisieString("le nom");
     String adresse = IhmPrincipale.saisieString("l'adresse");
@@ -68,7 +70,7 @@ class IhmEditeur {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  // action pour mettre a jour un Editeur selon ID
+  //Permet de lancer la méthode pour modifier un éditeur selon ID et de prendre les saisies nécessaires
   static Future<void> updateEditeur(ConnectionSettings settings) async {
     print("Quelle Editeur voulez vous mettre à jour ?");
     int id = IhmPrincipale.saisieID();
@@ -87,7 +89,7 @@ class IhmEditeur {
     }
   }
 
-  // action pour afficher un Editeur selon ID
+  //Permet d'afficher un éditeur selon ID et de prendre la saisie nécessaire
   static Future<void> selectEditeur(ConnectionSettings settings) async {
     print("Quelle editeur voulez vous afficher ?");
     int id = IhmPrincipale.saisieID();
@@ -104,9 +106,9 @@ class IhmEditeur {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  // action pour afficher les Editeur
-  static Future<void> selectAllEditeur(ConnectionSettings settings) async {
-    List<Editeur> listeEditeur = await DbEditeur.selectAllEditeur(settings);
+  //Permet de lancer la méthode d'affichage de tous les éditeurs de la table
+  static Future<void> selectAllEditeurs(ConnectionSettings settings) async {
+    List<Editeur> listeEditeur = await DbEditeur.selectAllEditeurs(settings);
     if (listeEditeur.isNotEmpty) {
       IhmPrincipale.afficherDesDonnees(listeEditeur);
       print("Fin de l'opération.");
@@ -119,7 +121,7 @@ class IhmEditeur {
     await Future.delayed(Duration(seconds: 2));
   }
 
-// action pour supprimer un Editeur selon ID
+//Permet de lancer la méthode de suppression d'un éditeur dans la table selon son ID et de prendre la saisie nécessaire
   static Future<void> deleteEditeur(ConnectionSettings settings) async {
     print("Quelle Editeur voulez vous supprimer ?");
     int id = IhmPrincipale.saisieID();
@@ -130,7 +132,7 @@ class IhmEditeur {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  // action pour supprimer les Editeur
+  //Permet de lancer la méthode de suppression de tous les éditeurs de la table
   static Future<void> deleteAllEditeur(ConnectionSettings settings) async {
     DbEditeur.deleteAllEditeur(settings);
     print("Tables supprimées.");

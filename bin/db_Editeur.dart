@@ -6,6 +6,7 @@ import 'db_Config.dart';
 import 'editeur.dart';
 
 class DbEditeur {
+  // Permet de sélectionner un éditeur précis selon son ID
   static Future<Editeur> selectEditeur(
       ConnectionSettings settings, int id) async {
     Editeur edi = Editeur.vide();
@@ -31,7 +32,8 @@ class DbEditeur {
     return edi;
   }
 
-  static Future<List<Editeur>> selectAllEditeur(
+  // Permet de sélectionner tous les éditeurs
+  static Future<List<Editeur>> selectAllEditeurs(
       ConnectionSettings settings) async {
     List<Editeur> listeEdi = [];
     try {
@@ -42,15 +44,6 @@ class DbEditeur {
         for (var row in reponse) {
           Editeur edi = Editeur(row['id'], row['nom'], row['adresse']);
           listeEdi.add(edi);
-
-          /*
-          // variante avec création d'éditeur depuis une liste
-          List<String> unEdi = [];
-          for (var field in row) {
-            unEdi.add(field.toString());
-          }
-          listeEdi.add(Editeur.fromListString(unEdi));
-          */
         }
       } catch (e) {
         log(e.toString());
@@ -63,6 +56,7 @@ class DbEditeur {
     return listeEdi;
   }
 
+  // Permet d'insérer un éditeur dans la table
   static Future<void> insertEditeur(
       ConnectionSettings settings, String nom, String adresse) async {
     try {
@@ -83,7 +77,7 @@ class DbEditeur {
     }
   }
 
-  //update
+  //Permet de modifier un éditeur de la table selon son ID
   static Future<void> updateEditeur(
       ConnectionSettings settings, int id, String nom, String adresse) async {
     try {
@@ -106,7 +100,7 @@ class DbEditeur {
     }
   }
 
-  //delete
+  //Permet de supprimer un éditeur dans la table selon son ID
   static Future<void> deleteEditeur(ConnectionSettings settings, int id) async {
     try {
       MySqlConnection conn = await MySqlConnection.connect(settings);
@@ -122,7 +116,7 @@ class DbEditeur {
     }
   }
 
-  //delete all
+  //Permet de supprimer tous les éditeurs
   static Future<void> deleteAllEditeur(ConnectionSettings settings) async {
     try {
       MySqlConnection conn = await MySqlConnection.connect(settings);
@@ -147,7 +141,7 @@ class DbEditeur {
     return exist;
   }
 
-  // getEditeur
+  // récupére un éditeur
   static Future<Editeur> getEditeur(ConnectionSettings settings, int id) async {
     dynamic r = await selectEditeur(settings, id);
     ResultRow rr = r.first;

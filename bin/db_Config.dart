@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:mysql1/mysql1.dart';
 
 class DBConfig {
-  // permet la création des tables, en vérifiant si elles existes ou non
+  // Permet de créer des tables, en vérifiant si elles existes ou non
   // et créé les tables manquantes si besoin
   static Future<void> createTables(ConnectionSettings settings) async {
     bool checkProduit = false;
@@ -52,7 +52,7 @@ class DBConfig {
     }
   }
 
-  // retourne vrai si toute les tables sont créé, faux sinon
+  // Permet de retourner vrai si toute les tables sont créé, faux sinon
   static Future<bool> checkTables(ConnectionSettings settings) async {
     bool checkAll = false;
     bool checkProduit = false;
@@ -90,7 +90,7 @@ class DBConfig {
     return checkAll;
   }
 
-  // retourne la liste des noms des tables dans la BDD;
+  // Permet de retourner la liste des noms des tables dans la BDD;
   static Future<List<String>> selectTables(ConnectionSettings settings) async {
     List<String> listTable = [];
     try {
@@ -113,7 +113,7 @@ class DBConfig {
     return listTable;
   }
 
-  // permet de supprimer une table via son nom passé en parametre, si elle existe dans la database
+  // Permet de supprimer une table via son nom passé en parametre, si elle existe dans la BDD
   static Future<void> dropTable(
       ConnectionSettings settings, String table) async {
     try {
@@ -129,7 +129,7 @@ class DBConfig {
     }
   }
 
-  // supprime toute les tables dans la DB
+  // Permet de supprimer toute les tables dans la BDD
   static Future<void> dropAllTable(ConnectionSettings settings) async {
     try {
       MySqlConnection conn = await MySqlConnection.connect(settings);

@@ -3,6 +3,7 @@ import 'package:mysql1/mysql1.dart';
 import 'dart:developer';
 
 class DbProduit {
+  // Permet de sélectionner un produit précis selon son ID
   static Future<Produit> selectProduit(
       ConnectionSettings settings, int id) async {
     Produit pro = Produit.vide();
@@ -35,70 +36,7 @@ class DbProduit {
     return pro;
   }
 
-  static Future<Produit> selectAuteur(
-      ConnectionSettings settings, int id) async {
-    Produit pro = Produit.vide();
-    try {
-      MySqlConnection conn = await MySqlConnection.connect(settings);
-      try {
-        String requete = "SELECT * FROM Produit WHERE auteur=" +
-            id.toString() +
-            " AND EXISTS (SELECT id FROM Produit WHERE auteur=" +
-            id.toString() +
-            " );";
-        Results reponse = await conn.query(requete);
-        pro = Produit(
-          reponse.first['id'],
-          reponse.first['titre'],
-          reponse.first['auteur'],
-          reponse.first['editeur'],
-          reponse.first['type'],
-          reponse.first['prix'],
-          reponse.first['nbDispo'],
-        );
-      } catch (e) {
-        log(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      log(e.toString());
-    }
-
-    return pro;
-  }
-
-  static Future<Produit> selectEditeur(
-      ConnectionSettings settings, int id) async {
-    Produit pro = Produit.vide();
-    try {
-      MySqlConnection conn = await MySqlConnection.connect(settings);
-      try {
-        String requete = "SELECT * FROM Produit WHERE editeur=" +
-            id.toString() +
-            " AND EXISTS (SELECT id FROM Produit WHERE editeur=" +
-            id.toString() +
-            " );";
-        Results reponse = await conn.query(requete);
-        pro = Produit(
-          reponse.first['id'],
-          reponse.first['titre'],
-          reponse.first['auteur'],
-          reponse.first['editeur'],
-          reponse.first['type'],
-          reponse.first['prix'],
-          reponse.first['nbDispo'],
-        );
-      } catch (e) {
-        log(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      log(e.toString());
-    }
-
-    return pro;
-  }
-
+  // Permet de sélectionner tous les produits
   static Future<List<Produit>> selectAllProduits(
       ConnectionSettings settings) async {
     List<Produit> listeProduit = [];
@@ -123,6 +61,7 @@ class DbProduit {
     return listeProduit;
   }
 
+  //Permet d'insérer un produit dans la table
   static Future<void> insertProduit(ConnectionSettings settings, String titre,
       int idAuteur, int idEditeur, String type, int prix, int nbDispo) async {
     try {
@@ -152,7 +91,7 @@ class DbProduit {
     }
   }
 
-  //update
+  //Permet de modifier un produit dans la table selon son ID
   static Future<void> updateProduit(
       ConnectionSettings settings,
       int id,
@@ -190,7 +129,7 @@ class DbProduit {
     }
   }
 
-  //delete
+  //Permet de supprimer un produit dans la table selon son ID
   static Future<void> deleteProduit(ConnectionSettings settings, int id) async {
     try {
       MySqlConnection conn = await MySqlConnection.connect(settings);
@@ -206,7 +145,7 @@ class DbProduit {
     }
   }
 
-  //delete all
+  //Permet de supprimer tous les produits dans la table
   static Future<void> deleteAllProduit(ConnectionSettings settings) async {
     try {
       MySqlConnection conn = await MySqlConnection.connect(settings);
@@ -231,7 +170,7 @@ class DbProduit {
     return exist;
   }
 
-  // getProduit
+  //récupère un produit
   static Future<Produit> getProduit(ConnectionSettings settings, int id) async {
     dynamic r = await selectProduit(settings, id);
     ResultRow rr = r.first;
